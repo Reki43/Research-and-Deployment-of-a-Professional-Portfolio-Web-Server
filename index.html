@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT &amp; System Administration Portfolio</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- AOS Library for scroll animations -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Add particles.js -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <!-- Add Typed.js -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+</head>
+<body>
+  <!-- Preloader -->
+  <div id="preloader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header>
+    <nav class="navbar">
+      <!-- EDIT: Your Name in Navigation -->
+      <div class="logo">
+        <a href="#home">Henry Wong</a>
+      </div>
+      <div class="nav-menu">
+        <ul class="nav-links">
+          <li><a href="#home" class="nav-link">Home</a></li>
+          <li><a href="#about" class="nav-link">About Me</a></li>
+          <li><a href="#skills" class="nav-link">Technical Skills</a></li>
+          <li><a href="#projects" class="nav-link">Projects</a></li>
+          <li><a href="#contact" class="nav-link">Contact Me</a></li>
+        </ul>
+        <div class="nav-social">
+          <a href="https://linkedin.com/in/YOUR_LINKEDIN" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/YOUR_GITHUB" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+      </div>
+      <div class="hamburger"><i class="fas fa-bars"></i></div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="section hero-section">
+    <div id="particles-js"></div>
+    <div class="hero-content">
+      <!-- EDIT: Your Name in Hero Section -->
+      <h1>Welcome, I'm Henry Wong</h1>
+      <!-- EDIT: Your Title/Role - Also update in script.js -->
+      <div class="typed-container">
+        <span id="typed-text"></span>
+      </div>
+      <!-- EDIT: Your Resume PDF Path -->
+      <div class="hero-buttons">
+        <a href="#projects" class="btn">View Projects</a>
+        <a href="resume.pdf" download class="btn btn-outline">View Resume</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Me Section -->
+  <section id="about" class="section about-section" data-aos="fade-up">
+    <div class="container">
+      <h2>About Me</h2>
+      <div class="profile">
+        <!-- EDIT: Your Profile Picture Path -->
+        <img src="Images/Profile Pic.jpg" alt="Henry's Profile Picture" />
+        <div class="profile-text">
+          <!-- EDIT: Your About Me Text -->
+          <p>Hi! My name is Henry. I'm currently studying Computer Information Technology at BCIT in Vancouver, Canada, as I love working with computers. In my time at BCIT, I learned many new skills like coding, networking, system administration, and cloud computing. However, I found that I became very intrigued in learning more about Linux administration, Windows administration, cloud technologies, and network and server management. These are the skills I need to get into the system administration field, which is what I want to do in the future.</p>
+
+        <p>Outside of school, I'm mostly on my computer. I enjoy building and learning about new PC hardware and experimenting with different softwares. In addition, I find immense satisfaction in troubleshooting and solving technical problems, especially when it comes to fixing common Windows issues or handling unexpected troubleshooting challenges. My hands-on experience has deepened my passion, and I’m always excited to explore new technologies.</p>
+            
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="section skills-section" data-aos="fade-up">
+    <div class="container">
+      <h2>Technical Skills</h2>
+      <div class="skills-container">
+        <div class="skill-category">
+          <div class="skill-header">
+            <i class="fas fa-code"></i>
+            <h3>Programming</h3>
+          </div>
+          <ul>
+            <li><i class="fab fa-python"></i> Python</li>
+            <li><i class="fab fa-js"></i> JavaScript</li>
+            <li><i class="fab fa-html5"></i> HTML/CSS</li>
+            <li><i class="fas fa-terminal"></i> Bash</li>
+          </ul>
+        </div>
+
+        <div class="skill-category">
+          <div class="skill-header">
+            <i class="fas fa-desktop"></i>
+            <h3>Operating Systems</h3>
+          </div>
+          <ul>
+            <li><i class="fab fa-linux"></i> Arch Linux</li>
+            <li><i class="fab fa-centos"></i> CentOS 8</li>
+            <li><i class="fab fa-windows"></i> Windows</li>
+          </ul>
+        </div>
+
+        <div class="skill-category">
+          <div class="skill-header">
+            <i class="fas fa-cloud"></i>
+            <h3>Cloud & Server</h3>
+          </div>
+          <ul>
+            <li><i class="fas fa-server"></i> DigitalOcean</li>
+            <li><i class="fas fa-key"></i> SSH Configuration</li>
+            <li><i class="fas fa-cloud-upload-alt"></i> Cloud-init</li>
+            <li><i class="fas fa-cogs"></i> Linux Server Management</li>
+          </ul>
+        </div>
+
+        <div class="skill-category">
+          <div class="skill-header">
+            <i class="fas fa-laptop-code"></i>
+            <h3>Virtualization</h3>
+          </div>
+          <ul>
+            <li><i class="fas fa-box"></i> VirtualBox</li>
+            <li><i class="fas fa-server"></i> VMware</li>
+            <li><i class="fas fa-cloud"></i> Multipass</li>
+          </ul>
+        </div>
+
+        <div class="skill-category">
+          <div class="skill-header">
+            <i class="fas fa-microchip"></i>
+            <h3>Hardware</h3>
+          </div>
+          <ul>
+            <li><i class="fas fa-tools"></i> PC Building</li>
+            <li><i class="fas fa-memory"></i> Component Installation</li>
+            <li><i class="fas fa-wrench"></i> System Troubleshooting</li>
+          </ul>
+        </div>
+
+        <div class="skill-category">
+          <div class="skill-header">
+            <i class="fas fa-network-wired"></i>
+            <h3>Networking</h3>
+          </div>
+          <ul>
+            <li><i class="fas fa-route"></i> IPv4/IPv6 Configuration</li>
+            <li><i class="fas fa-network-wired"></i> Network Routing</li>
+            <li><i class="fas fa-sitemap"></i> Subnetting</li>
+          </ul>
+        </div>
+
+        <div class="skill-category windows-category">
+          <div class="skill-header">
+            <i class="fab fa-windows"></i>
+            <h3>Windows Administration</h3>
+          </div>
+          <ul>
+            <li><i class="fas fa-network-wired"></i> Active Directory Domain Services Configuration</li>
+            <li><i class="fas fa-server"></i> Hyper-V Virtualization</li>
+            <li><i class="fas fa-hdd"></i> iSCSI SAN Storage Management</li>
+            <li><i class="fas fa-network-wired"></i> DHCP/DNS Configuration</li>
+            <li><i class="fas fa-users-cog"></i> User/Group Administration</li>
+          </ul>
+        </div>
+
+        <div class="skill-category linux-category">
+          <div class="skill-header">
+            <i class="fab fa-linux"></i>
+            <h3>Linux Administration</h3>
+          </div>
+          <ul>
+            <li><i class="fas fa-terminal"></i> Shell Script Automation</li>
+            <li><i class="fas fa-users-cog"></i> User & Group Management</li>
+            <li><i class="fas fa-shield-alt"></i> System Security & SSH</li>
+            <li><i class="fas fa-tasks"></i> Process Management</li>
+            <li><i class="fas fa-archive"></i> System Backup & Recovery</li>
+            <li><i class="fas fa-server"></i> Web Server Configuration using Nginx</li>
+            <li><i class="fas fa-file-alt"></i> Log Analysis & Monitoring</li>
+            <li><i class="fas fa-box-open"></i> Pacman Package Management</li>
+          </ul>
+        </div>
+
+        <div class="skill-category aws-category">
+          <div class="skill-header">
+            <i class="fab fa-aws"></i>
+            <h3>AWS Cloud</h3>
+          </div>
+          <ul>
+            <li><i class="fas fa-server"></i> EC2 Configuration</li>
+            <li><i class="fas fa-globe"></i> EC2 Web App Deployment</li>
+            <li><i class="fas fa-users-cog"></i> IAM, S3 & CloudWatch</li>
+            <li><i class="fas fa-database"></i> RDS & Database Management</li>
+            <li><i class="fas fa-copy"></i> AMIs & System Scaling</li>
+            <li><i class="fas fa-network-wired"></i> VPC Configuration</li>
+            <li><i class="fas fa-balance-scale"></i> Load Balancing (ASG/ALB)</li>
+          </ul>
+        </div>
+
+        <!-- Add Tools Section -->
+        <div class="tools" data-aos="fade-up" data-aos-delay="600">
+          <h3>Development Tools</h3>
+          <div class="tool-icons">
+            <div class="tool"><i class="fas fa-code"></i><span>VS Code</span></div>
+            <div class="tool"><i class="fab fa-github"></i><span>GitHub</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- My Work / Projects Section -->
+  <section id="projects" class="section projects-section" data-aos="fade-up">
+    <div class="container">
+      <h2>Projects</h2>
+      <div class="projects-grid">
+        <!-- EDIT: Project Card Template - Copy/paste for more projects
+        <div class="project-card" 
+             data-project-title="Project Title" 
+             data-project-desc="Full project description here" 
+             data-project-img="Images/project1.jpg">
+          <img src="Images/project1.jpg" alt="Project Name" />
+          <div class="project-info">
+            <h3>Project Name</h3>
+            <p>Short description.</p>
+          </div>
+        </div>
+        -->
+        <div class="project-card" data-project-title="ParkYourAssignment" data-project-desc="A student assignment tracker that streamlines submission and grading processes. Click for more details." data-project-img="Images/project1.jpg">
+          <img src="Images/project1.jpg" alt="BCIT CIT Forum Website" />
+          <div class="project-info">
+            <h3>BCIT CIT Forum Website</h3>
+            <p>A forum page made for CIT students to chat about. Similar to reddit</p>
+          </div>
+        </div>
+        <div class="project-card" data-project-title="DigitalOcean Instructions" data-project-desc="Guidelines for setting up and configuring servers using doctl and cloud-init on DigitalOcean." data-project-img="Images/project2.jpg">
+          <img src="Images/project2.jpg" alt="DigitalOcean Instructions" />
+          <div class="project-info">
+            <h3>DigitalOcean Instructions</h3>
+            <p>Server setup with doctl and cloud-init.</p>
+          </div>
+        </div>
+        <div class="project-card" data-project-title="Bash Shell Scripting" data-project-desc="Automated scripts for package installation, configuration, and user creation in Linux environments." data-project-img="Images/project3.jpg">
+          <img src="Images/project3.jpg" alt="Bash Shell Scripting" />
+          <div class="project-info">
+            <h3>Bash Shell Scripting</h3>
+            <p>Automating system tasks with scripts.</p>
+          </div>
+        </div>
+        <div class="project-card" data-project-title="Caddy Web Server" data-project-desc="Implemented and configured a secure, efficient web server using Caddy." data-project-img="Images/project4.jpg">
+          <img src="Images/project4.jpg" alt="Caddy Web Server" />
+          <div class="project-info">
+            <h3>Caddy Web Server</h3>
+            <p>Setup and configuration with Caddy.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section contact-section" data-aos="fade-up">
+    <div class="container">
+      <h2>Contact Me</h2>
+      <form class="contact-form" id="contact-form">
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Your Email" required />
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
+        <p id="form-feedback"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer data-aos="fade-up">
+    <div class="container">
+      <!-- EDIT: Update Year and Name -->
+      <p>&copy; 2025 Henry Wong. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Project Modal (for detailed project view) -->
+  <div id="project-modal" class="modal">
+    <div class="modal-content" data-aos="zoom-in">
+      <span class="close-modal">&times;</span>
+      <img id="modal-img" src="" alt="Project Image" />
+      <h3 id="modal-title"></h3>
+      <p id="modal-desc"></p>
+    </div>
+  </div>
+
+  <button id="back-to-top"><i class="fas fa-arrow-up"></i></button>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
