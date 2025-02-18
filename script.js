@@ -6,7 +6,7 @@ async function checkAuth() {
             return true;
         }
 
-        const response = await fetch('http://localhost:3000/api/check-session', {
+        const response = await fetch('/api/check-session', {
             credentials: 'include'
         });
         const data = await response.json();
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     logoutBtn.style.marginLeft = '1rem';
     logoutBtn.onclick = async () => {
         try {
-            await fetch('http://localhost:3000/api/logout', {
+            await fetch('/api/logout', {
                 method: 'POST',
                 credentials: 'include'
             });

@@ -1,0 +1,13 @@
+localhost {
+    # Serve static files from the root directory
+    root * .
+    file_server
+
+    # Proxy /api requests to Node.js backend
+    handle /api/* {
+        reverse_proxy localhost:3000
+    }
+
+    # Enable gzip compression
+    encode gzip
+}

@@ -1014,7 +1014,43 @@ header.scrolled {
   text-align: center;
   padding: 40px 20px; /* Reduced padding */
   min-height: auto;
-  margin-left: 260px; /* Match projects-grid margin */
+}
+
+.contact-section .container {
+  max-width: 600px; /* Added max-width */
+  margin: 0 auto;  /* Center the container */
+  width: 100%;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%; /* Make form take full container width */
+  max-width: 500px; /* Limit maximum width */
+  margin: 0 auto; /* Center the form */
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.contact-form textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.contact-form button {
+  width: auto;
+  align-self: center;
+  min-width: 150px;
 }
 
 @media (max-width: 1200px) {
