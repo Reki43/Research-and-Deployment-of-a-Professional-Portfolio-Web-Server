@@ -161,6 +161,11 @@ window.addEventListener('scroll', () => {
   if (isTransitioning) return;
   
   const currentScroll = window.pageYOffset;
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+  
+  // Check if we're at the bottom of the page
+  const isBottom = currentScroll + windowHeight >= documentHeight - 50; // 50px threshold
   
   if (currentScroll <= 50) {
     header.classList.remove('scrolled');
@@ -183,15 +188,22 @@ window.addEventListener('scroll', () => {
   let currentSectionId = '';
   sections.forEach(section => {
     const sectionTop = section.offsetTop - 150;
-    if (currentScroll >= sectionTop) {
-      currentSectionId = section.getAttribute('id');
+    const sectionHeight = section.offsetHeight;
+    
+    // If we're at the bottom of the page, activate the contact section
+    if (isBottom && section.id === 'contact') {
+      currentSectionId = 'contact';
+    }
+    // Otherwise use normal scroll position detection
+    else if (currentScroll >= sectionTop && currentScroll < sectionTop + sectionHeight) {
+      currentSectionId = section.id;
     }
   });
   
   // Update active states in both navigations
   document.querySelectorAll('.nav-links a').forEach(link => {
     link.classList.remove('active');
-    if (link.getAttribute('href').includes(currentSectionId)) {
+    if (link.getAttribute('href') === `#${currentSectionId}`) {
       link.classList.add('active');
     }
   });
