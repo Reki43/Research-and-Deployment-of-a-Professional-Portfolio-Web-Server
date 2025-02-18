@@ -107,6 +107,61 @@ window.addEventListener('click', (e) => {
   if (e.target === projectModal) projectModal.style.display = 'none';
 });
 
+/* Resume Modal Functions */
+function showResumeModal(event) {
+  event.preventDefault();
+  const resumeModal = document.getElementById('resume-modal');
+  const iframe = document.getElementById('resume-preview');
+  const errorDiv = document.getElementById('resume-error');
+  
+  // Test if PDF exists before showing modal
+  fetch('resume.pdf')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('PDF not found');
+      }
+      // PDF exists, show modal
+      resumeModal.style.display = 'flex';
+      iframe.style.display = 'block';
+      errorDiv.style.display = 'none';
+    })
+    .catch(error => {
+      console.error('Error loading PDF:', error);
+      resumeModal.style.display = 'flex';
+      iframe.style.display = 'none';
+      errorDiv.style.display = 'block';
+    });
+}
+
+function closeResumeModal() {
+  const resumeModal = document.getElementById('resume-modal');
+  resumeModal.style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.addEventListener('click', (e) => {
+  const resumeModal = document.getElementById('resume-modal');
+  if (e.target === resumeModal) {
+    resumeModal.style.display = 'none';
+  }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const resumeModal = document.getElementById('resume-modal');
+    resumeModal.style.display = 'none';
+  }
+});
+
+/* Resume Error Handling */
+function handleResumeError() {
+  const iframe = document.getElementById('resume-preview');
+  const errorDiv = document.getElementById('resume-error');
+  iframe.style.display = 'none';
+  errorDiv.style.display = 'block';
+}
+
 /* Contact Form Submission */
 const contactForm = document.getElementById('contact-form');
 const formFeedback = document.getElementById('form-feedback');

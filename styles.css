@@ -936,6 +936,56 @@ header.scrolled {
   color: var(--accent-color);
 }
 
+.resume-modal-content {
+  width: 90%;
+  max-width: 1000px;
+  height: 90vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.resume-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#resume-preview {
+  flex: 1;
+  width: 100%;
+  border-radius: 8px;
+  background: white;
+}
+
+.resume-actions {
+  display: flex;
+  justify-content: center;
+  padding: 15px 0;
+}
+
+.btn-download {
+  background: var(--accent-color);
+  color: white;
+  padding: 12px 25px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-download:hover {
+  background: #0087bf;
+  transform: translateY(-2px);
+}
+
+.btn-download i {
+  font-size: 1.2rem;
+}
+
 @media (max-width: 768px) {
   .modal-content {
     padding: 20px;

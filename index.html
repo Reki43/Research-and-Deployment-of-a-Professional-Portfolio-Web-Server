@@ -63,7 +63,7 @@
       <!-- EDIT: Your Resume PDF Path -->
       <div class="hero-buttons">
         <a href="#projects" class="btn">View Projects</a>
-        <a href="resume.pdf" download class="btn btn-outline">View Resume</a>
+        <a href="#" class="btn btn-outline" onclick="showResumeModal(event)">View Resume</a>
       </div>
     </div>
   </section>
@@ -324,6 +324,33 @@ Status: Active development - Expected completion April 2025"
       <img id="modal-img" src="" alt="Project Image" />
       <h3 id="modal-title"></h3>
       <p id="modal-desc"></p>
+    </div>
+  </div>
+
+  <div id="resume-modal" class="modal">
+    <div class="modal-content resume-modal-content">
+      <span class="close-modal" onclick="closeResumeModal()">&times;</span>
+      <div class="resume-container">
+        <div id="resume-loading" style="text-align: center; padding: 20px;">
+          <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #00AEEF;"></i>
+          <p>Loading resume...</p>
+        </div>
+        <iframe id="resume-preview" 
+                src="resume.pdf#toolbar=0" 
+                frameborder="0" 
+                style="display: none;"
+                onload="this.style.display='block'; document.getElementById('resume-loading').style.display='none';"
+                onerror="handleResumeError()"></iframe>
+        <div id="resume-error" style="display: none; text-align: center; padding: 20px; color: #ff6b6b;">
+          <i class="fas fa-exclamation-circle" style="font-size: 2rem; margin-bottom: 10px;"></i>
+          <p>Failed to load resume. Please try downloading instead.</p>
+        </div>
+        <div class="resume-actions">
+          <a href="resume.pdf" download class="btn btn-download">
+            <i class="fas fa-download"></i> Download Resume
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 
