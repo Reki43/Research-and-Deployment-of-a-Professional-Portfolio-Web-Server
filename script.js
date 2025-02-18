@@ -1,3 +1,56 @@
+// Authentication check
+async function checkAuth() {
+    try {
+        // First check session storage
+        if (sessionStorage.getItem('isAuthenticated') === 'true') {
+            return true;
+        }
+
+        const response = await fetch('http://localhost:3000/api/check-session', {
+            credentials: 'include'
+        });
+        const data = await response.json();
+        
+        if (!data.isAuthenticated) {
+            console.log('Not authenticated, redirecting to login');
+            window.location.href = './login.html';
+            return false;
+        }
+        
+        sessionStorage.setItem('isAuthenticated', 'true');
+        return true;
+    } catch (error) {
+        console.error('Auth check failed:', error);
+        window.location.href = './login.html';
+        return false;
+    }
+}
+
+// Call auth check immediately but wait for DOM
+document.addEventListener('DOMContentLoaded', checkAuth);
+
+// Add logout functionality to header
+document.addEventListener('DOMContentLoaded', () => {
+    const navMenu = document.querySelector('.nav-menu');
+    const logoutBtn = document.createElement('button');
+    logoutBtn.className = 'btn';
+    logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+    logoutBtn.style.marginLeft = '1rem';
+    logoutBtn.onclick = async () => {
+        try {
+            await fetch('http://localhost:3000/api/logout', {
+                method: 'POST',
+                credentials: 'include'
+            });
+            localStorage.removeItem('isAuthenticated');
+            window.location.href = 'login.html';
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    };
+    navMenu.appendChild(logoutBtn);
+});
+
 /* Preloader & Initialization */
 window.addEventListener('load', () => {
   const preloader = document.getElementById('preloader');
