@@ -1,11 +1,13 @@
+# Development server configuration for portfolio website
 :2000 {  
+    # Set the website root directory where all static files are located
     root * "C:/Users/henry/Documents/BCIT CIT TERM 3/ACIT 3475 Web Server Admin/Project 1/Portfolio website"
 
-    # Enable file serving
+    # Enable static file serving functionality
     file_server
 
-    # Handle API requests
+    # Route all /api/* requests to the Node.js backend server
     handle /api/* {
-        reverse_proxy localhost:3000 # 
+        reverse_proxy localhost:3000
     }
 }
