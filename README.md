@@ -107,13 +107,19 @@ Successfully deployed Caddy locally and set up a basic portfolio website structu
 ssh -i existing-key.pem ubuntu@[ec2-ip]
 ```
 
-### Step 2: Setting Up the Web Server
+### Step 2: Setting Up the Web Server and Domain
 1. Installed Caddy and followed welcome page instructions:
 ```bash
 sudo apt update && sudo apt install -y caddy
 ```
 
-2. Installed Node.js :
+2. Domain Registration and DNS Setup:
+   - Purchased 'henry-wong.site' domain from Namecheap
+   - Created AWS Route 53 hosted zone
+   - Added A record pointing to EC2 IP
+   - Configured nameservers in Namecheap to point to Route 53
+
+3. Installed Node.js :
 ```bash
 sudo apt install -y nodejs
 
@@ -122,7 +128,7 @@ node --version
 npm --version
 ```
 
-3. Followed Caddy's welcome page setup guide:
+4. Followed Caddy's welcome page setup guide:
    - Created web root: `sudo mkdir -p /var/www/html`
    - Set permissions: `sudo chown -R ubuntu:ubuntu /var/www/html`
    - Modified Caddyfile at `/etc/caddy/Caddyfile`:
@@ -130,14 +136,13 @@ npm --version
      - Set root to `/var/www/html`
    - Reloaded config: `sudo systemctl reload caddy`
 
-4. Cloned portfolio:
+5. Cloned portfolio:
 ```bash
 cd /var/www/html
 git clone [my-repository] .
 ```
 
-### Step 3: Configuring the Server
-1. Set up Caddyfile following official domain deployment guide:
+6. Configured Caddyfile for domain and automatic SSL:
 ```
 portfolio.henry-wong.site {
     root * /var/www/html
@@ -148,13 +153,14 @@ portfolio.henry-wong.site {
 }
 ```
 
-2. Backend setup:
+### Step 3: Configuring the Server
+1. Backend setup:
 ```bash
 cd backend
 npm install
 ```
 
-3. Created Node.js service:
+2. Created Node.js service:
 ```bash
 # /etc/systemd/system/portfolio-backend.service
 [Unit]
@@ -173,27 +179,11 @@ Environment=NODE_ENV=production
 WantedBy=multi-user.target
 ```
 
-4. Enabled and started the service:
+3. Enabled and started the service:
 ```bash
 sudo systemctl enable portfolio-backend
 sudo systemctl start portfolio-backend
 sudo systemctl status portfolio-backend  
-```
-
-### Step 4: Domain and SSL Setup
-1. Domain Registration:
-   - Purchased 'henry-wong.site' domain from Namecheap
- 
-
-2. AWS Route 53:
-   - Created hosted zone
-   - Added A record pointing to EC2 IP
-   - Configured nameservers
-
-3. Started services:
-```bash
-sudo systemctl start caddy
-sudo systemctl start portfolio-backend
 ```
 
 ### Challenges and Solutions
