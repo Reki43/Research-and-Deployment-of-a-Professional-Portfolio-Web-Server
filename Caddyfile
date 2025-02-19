@@ -1,9 +1,10 @@
-:3000 {
-    # Point directly to the Portfolio Website directory
-    root * /c:/Users/henry/Documents/BCIT CIT TERM 3/ACIT 3475 Web Server Admin/Project 1/Portfolio Website
+:2000 {
+    root * "C:/Users/henry/Documents/BCIT CIT TERM 3/ACIT 3475 Web Server Admin/Project 1/Portfolio website"
 
+    # Enable file serving
     file_server
 
+    # Handle API requests
     handle /api/* {
         reverse_proxy localhost:5050
     }

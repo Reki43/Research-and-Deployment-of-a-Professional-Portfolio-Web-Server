@@ -7,6 +7,12 @@
   --transition-speed: 0.4s;  /* Increased from 0.3s */
 }
 
+html {
+  font-size: 16px;
+  overflow-x: hidden;
+  width: 100%;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -17,6 +23,17 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   scroll-behavior: smooth;
+  min-width: 320px;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 #preloader {
@@ -178,7 +195,10 @@ header.scrolled {
     radial-gradient(circle at 75px 75px, rgba(0, 174, 239, 0.05) 2%, transparent 0%);
   background-size: 100px 100px;
   animation: backgroundShift 20s linear infinite;
+  width: 100vw;
+  max-width: 100%;
 }
+
 @keyframes backgroundShift {
   0% { background-position: 0 0; }
   100% { background-position: 100px 100px; }
@@ -217,6 +237,9 @@ header.scrolled {
   border-radius: 8px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(8px);
+  width: 90%;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 .tech-icon-container {
   margin-bottom: 30px;
@@ -768,9 +791,12 @@ header.scrolled {
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); /* Increased from 280px */
-  gap: 30px; /* Increased from 20px */
-  margin-left: 260px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .project-card {
@@ -1176,31 +1202,67 @@ footer[data-aos] {
 
 /* Enhanced Sidebar Navigation Styles */
 .sidebar-nav {
-  position: fixed;
-  left: 0;
-  top: 0;
+  display: none; /* Hide by default */
+  min-width: 250px;
+  max-width: 250px;
+  width: 250px;
+  z-index: 2100; /* Ensure sidebar is above other content */
   height: 100vh;
-  width: 250px; /* Reduced from 280px */
-  background: linear-gradient(145deg, 
-    rgba(26, 26, 26, 0.95) 0%,
-    rgba(38, 38, 38, 0.98) 100%);
-  backdrop-filter: blur(10px);
-  padding: 90px 0 0;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(-100%);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 2000;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden; /* Change from auto to hidden */
 }
 
-.sidebar-nav.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(0);
+@media screen and (min-width: 1201px) {
+  .sidebar-nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 250px;
+    background: linear-gradient(145deg, 
+      rgba(26, 26, 26, 0.95) 0%,
+      rgba(38, 38, 38, 0.98) 100%);
+    backdrop-filter: blur(10px);
+    padding: 90px 0 0;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition: all 0.3s ease;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-nav.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+
+  /* Adjust main content when sidebar is active */
+  .section {
+    transition: margin-left 0.3s ease;
+  }
+
+  .section.sidebar-active {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+  }
+}
+
+/* Remove margin adjustments for smaller screens */
+@media screen and (max-width: 1200px) {
+  .section,
+  .section.sidebar-active {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .container {
+    padding: 0 20px;
+  }
 }
 
 @keyframes sidebarGlow {
@@ -1211,14 +1273,15 @@ footer[data-aos] {
 .sidebar-nav .nav-links {
   flex: 1;
   padding: 20px;
-  overflow-y: auto;
+  overflow-y: visible; /* Change from auto to visible */
+  display: flex;
   flex-direction: column;
   gap: 15px; /* Increased from 10px */
+  max-height: calc(100vh - 180px); /* Account for padding and social bar */
 }
 
 .sidebar-nav .nav-links li {
-  margin-bottom: 12px;
-  margin: 8px 12px; /* Reduced horizontal margin from 20px */
+  margin: 0 12px 8px; /* Combine margins into one declaration */
   position: relative;
 }
 
@@ -1378,4 +1441,38 @@ header.scrolled {
     left: -100%;
     width: 100%;
   }
+}
+
+@media screen and (max-width: 1200px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 13px;
+  }
+  
+  .hero-content {
+    width: 95%;
+    padding: 30px 15px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }

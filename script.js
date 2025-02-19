@@ -250,10 +250,10 @@ sidebarNav.appendChild(navLinksClone);
 const sidebarSocial = document.createElement('div');
 sidebarSocial.className = 'sidebar-social';
 sidebarSocial.innerHTML = `
-  <a href="https://linkedin.com/in/YOUR_LINKEDIN" target="_blank" rel="noopener">
+  <a href="https://linkedin.com/in/henry-wong-ba1ab81aa" target="_blank" rel="noopener">
     <i class="fab fa-linkedin"></i>
   </a>
-  <a href="https://github.com/YOUR_GITHUB" target="_blank" rel="noopener">
+  <a href="https://github.com/Reki43" target="_blank" rel="noopener">
     <i class="fab fa-github"></i>
   </a>
 `;
@@ -264,6 +264,49 @@ document.body.appendChild(sidebarNav);
 // Simplified scroll handling
 let lastScroll = 0;
 let isTransitioning = false;
+
+window.addEventListener('scroll', () => {
+  if (window.innerWidth <= 1200) {
+    // Disable sidebar functionality on smaller screens
+    return;
+  }
+
+  if (isTransitioning) return;
+  
+  const currentScroll = window.pageYOffset;
+  
+  if (currentScroll <= 50) {
+    header.classList.remove('scrolled');
+    sidebarNav.classList.remove('active');
+    document.querySelectorAll('.section').forEach(section => {
+      section.classList.remove('sidebar-active');
+    });
+  } else if (currentScroll > lastScroll && !header.classList.contains('scrolled')) {
+    isTransitioning = true;
+    header.classList.add('scrolled');
+    
+    setTimeout(() => {
+      sidebarNav.classList.add('active');
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.add('sidebar-active');
+      });
+      isTransitioning = false;
+    }, 300);
+  }
+
+  lastScroll = currentScroll;
+  // ...rest of the scroll handler code...
+});
+
+// Add resize handler
+window.addEventListener('resize', () => {
+  if (window.innerWidth <= 1200) {
+    sidebarNav.classList.remove('active');
+    document.querySelectorAll('.section').forEach(section => {
+      section.classList.remove('sidebar-active');
+    });
+  }
+});
 
 window.addEventListener('scroll', () => {
   if (isTransitioning) return;
