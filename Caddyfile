@@ -1,13 +1,10 @@
-localhost {
-    # Serve static files from the root directory
-    root * .
+:3000 {
+    # Point directly to the Portfolio Website directory
+    root * /c:/Users/henry/Documents/BCIT CIT TERM 3/ACIT 3475 Web Server Admin/Project 1/Portfolio Website
+
     file_server
 
-    # Proxy /api requests to Node.js backend
     handle /api/* {
-        reverse_proxy localhost:3000
+        reverse_proxy localhost:5050
     }
-
-    # Enable gzip compression
-    encode gzip
 }
