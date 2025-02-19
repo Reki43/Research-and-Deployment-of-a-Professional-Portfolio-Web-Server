@@ -1,4 +1,4 @@
-:2000 {
+:2000 {  
     root * "C:/Users/henry/Documents/BCIT CIT TERM 3/ACIT 3475 Web Server Admin/Project 1/Portfolio website"
 
     # Enable file serving
@@ -6,6 +6,6 @@
 
     # Handle API requests
     handle /api/* {
-        reverse_proxy localhost:5050
+        reverse_proxy localhost:3000 # 
     }
 }
