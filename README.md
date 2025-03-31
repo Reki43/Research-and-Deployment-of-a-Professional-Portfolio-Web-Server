@@ -85,36 +85,10 @@ Built my portfolio website using:
    - Challenge: Initial port 80/443 conflicts
    - Solution: Switched to port 2000 for development
 
-### Troubleshooting Guide
-
-#### Common Issues and Solutions
-
-1. **Caddy Won't Start**
-   ```bash
-   # Check Caddy status
-   systemctl status caddy
-   # View Caddy logs
-   journalctl -u caddy --no-pager
-   ```
-   - If port conflicts: Change port in Caddyfile
-   - If permission errors: Check file ownership with `ls -la`
-
-2. **Backend Service Issues**
-   ```bash
-   # Check Node.js service status
-   systemctl status portfolio-backend
-   # View backend logs
-   journalctl -u portfolio-backend --no-pager
-   ```
-   - If service crashes: Check for missing dependencies
-   - If connection refused: Verify port 3000 is available
-
 
 
 ### Conclusion
 Successfully deployed Caddy locally and set up a basic portfolio website structure. The process helped me understand web server configuration and deployment workflows.
-
-![Succesful laucnh of caddy](readme_images/local.png)
 
 ## Part 3: Cloud Deployment and Domain Setup
 

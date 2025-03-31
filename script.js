@@ -18,6 +18,8 @@ async function checkAuth() {
         }
         
         sessionStorage.setItem('isAuthenticated', 'true');
+        // Store admin status
+        sessionStorage.setItem('isAdmin', data.isAdmin ? 'true' : 'false');
         return true;
     } catch (error) {
         console.error('Auth check failed:', error);
@@ -27,7 +29,33 @@ async function checkAuth() {
 }
 
 // Call auth check immediately but wait for DOM
-document.addEventListener('DOMContentLoaded', checkAuth);
+document.addEventListener('DOMContentLoaded', async () => {
+    await checkAuth();
+    
+    // Add admin controls if the user is an admin
+    if (sessionStorage.getItem('isAdmin') === 'true') {
+        addAdminControls();
+    }
+});
+
+// Add admin controls to the Projects section
+function addAdminControls() {
+    const projectsSection = document.getElementById('projects');
+    if (!projectsSection) return;
+    
+    // Add an edit button to the Projects section header
+    const projectsHeader = projectsSection.querySelector('h2');
+    if (projectsHeader) {
+        const editButton = document.createElement('a');
+        editButton.href = './admin-projects.html';
+        editButton.className = 'btn btn-outline admin-edit-btn';
+        editButton.innerHTML = '<i class="fas fa-edit"></i> Edit Projects';
+        editButton.style.marginLeft = '15px';
+        editButton.style.fontSize = '1rem';
+        editButton.style.verticalAlign = 'middle';
+        projectsHeader.appendChild(editButton);
+    }
+}
 
 // Add logout functionality to header
 document.addEventListener('DOMContentLoaded', () => {
@@ -42,7 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 credentials: 'include'
             });
-            localStorage.removeItem('isAuthenticated');
+            sessionStorage.removeItem('isAuthenticated');
+            sessionStorage.removeItem('isAdmin');
             window.location.href = 'login.html';
         } catch (error) {
             console.error('Logout failed:', error);
