@@ -54,9 +54,25 @@ app.post('/api/login', (req, res) => {
         return res.status(401).json({ message: 'Invalid credentials' });
     }
     req.session.userId = user.id;
-    req.session.isAdmin = true;
+    req.session.isAdmin = true;  // All authenticated users are admins
+    req.session.isAuthenticated = true;
     res.json({ message: 'Logged in successfully' });
 });
+
+// Middleware for authentication check
+function requireAuth(req, res, next) {
+    if (req.isAuthenticated() || req.session.userId) {
+        return next();
+    }
+    return res.status(401).json({ message: 'Authentication required' });
+}
+
+// Modified middleware - all authenticated users can edit projects
+// No separate admin check needed
+function requireAdmin(req, res, next) {
+    // All authenticated users are admins now
+    return next();
+}
 
 // Projects API with protection
 const projects = [
@@ -68,17 +84,8 @@ app.get('/api/projects', (req, res) => {
     res.json(projects);
 });
 
-// Protected route for updating projects
-app.post('/api/projects', (req, res) => {
-    // Check if user is authenticated and is admin
-    if (!req.isAuthenticated() && !req.session.userId) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-    
-    if (!req.user?.isAdmin && !req.session.isAdmin) {
-        return res.status(403).json({ message: 'Forbidden: Admin access required' });
-    }
-    
+// Protected route for updating projects - only requires authentication
+app.post('/api/projects', requireAuth, (req, res) => {
     // Update projects
     const newProjects = req.body;
     projects.length = 0; // Clear array

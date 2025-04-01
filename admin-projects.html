@@ -146,6 +146,10 @@
     </style>
 </head>
 <body>
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
     <div class="admin-container">
         <div class="admin-header">
             <a href="index.html" id="back-link"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
@@ -193,12 +197,24 @@
     </div>
 
     <script>
-        // Authentication check
+        // Authentication check - Updated with better error handling
         async function checkAuth() {
             try {
+                // Check session storage first for faster response
+                if (sessionStorage.getItem('isAuthenticated') === 'true' && 
+                    sessionStorage.getItem('isAdmin') === 'true') {
+                    return true;
+                }
+
+                // Verify with server
                 const response = await fetch('/api/check-session', {
                     credentials: 'include'
                 });
+                
+                if (!response.ok) {
+                    throw new Error('Authentication check failed');
+                }
+                
                 const data = await response.json();
                 
                 if (!data.isAuthenticated) {
@@ -213,6 +229,10 @@
                     return false;
                 }
                 
+                // Store authentication state
+                sessionStorage.setItem('isAuthenticated', 'true');
+                sessionStorage.setItem('isAdmin', 'true');
+                
                 return true;
             } catch (error) {
                 console.error('Auth check failed:', error);
@@ -221,10 +241,19 @@
             }
         }
 
-        // Call auth check immediately
-        document.addEventListener('DOMContentLoaded', async () => {
+        // Call auth check immediately when the page loads
+        window.addEventListener('DOMContentLoaded', async () => {
+            // Hide the content until authentication is verified
+            document.querySelector('.admin-container').style.display = 'none';
+            
             const isAuthorized = await checkAuth();
             if (!isAuthorized) return;
+            
+            // Show admin interface after auth check passes
+            document.querySelector('.admin-container').style.display = 'block';
+            
+            // Hide preloader
+            document.getElementById('preloader').style.display = 'none';
             
             // Load projects
             loadProjects();
@@ -363,7 +392,7 @@
             document.getElementById('project-id').value = '';
         }
 
-        // Save projects to the server
+        // Save projects to the server with enhanced error handling
         async function saveProjectsToServer() {
             try {
                 const response = await fetch('/api/projects', {
@@ -371,11 +400,22 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    credentials: 'include',
+                    credentials: 'include',  // Important for auth cookies
                     body: JSON.stringify(projects)
                 });
                 
                 if (!response.ok) {
+                    // Handle specific error cases
+                    if (response.status === 401) {
+                        sessionStorage.removeItem('isAuthenticated');
+                        sessionStorage.removeItem('isAdmin');
+                        window.location.href = './login.html';
+                        throw new Error('Authentication required. Please log in.');
+                    } else if (response.status === 403) {
+                        window.location.href = './index.html';
+                        throw new Error('You do not have permission to perform this action.');
+                    }
+                    
                     const data = await response.json();
                     throw new Error(data.message || 'Failed to save projects');
                 }

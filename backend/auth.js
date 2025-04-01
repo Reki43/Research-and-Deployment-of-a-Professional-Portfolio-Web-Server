@@ -9,25 +9,15 @@ module.exports = (app) => {
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: process.env.GOOGLE_CALLBACK_URL
     }, (accessToken, refreshToken, profile, done) => {
-        // Check if user is allowed to access (using email)
-        const adminEmail = process.env.ADMIN_EMAIL;
+        // Grant admin rights to all authenticated users
         const userEmail = profile.emails && profile.emails[0] ? profile.emails[0].value : '';
         
-        if (userEmail === adminEmail) {
-            return done(null, {
-                id: profile.id,
-                email: userEmail,
-                name: profile.displayName,
-                isAdmin: true
-            });
-        }
-        
-        // Return non-admin user
+        // All authenticated users are now admins
         return done(null, {
             id: profile.id,
             email: userEmail,
             name: profile.displayName,
-            isAdmin: false
+            isAdmin: true  // Make all users admins
         });
     }));
 
@@ -50,6 +40,14 @@ module.exports = (app) => {
         (req, res) => {
             // Successful authentication
             req.session.isAuthenticated = true;
+            
+            // Debug information
+            console.log('Google auth successful for:', req.user?.email);
+            console.log('Is admin? (All users are now admins):', true);
+            
+            // Set admin flag for all authenticated users
+            req.session.isAdmin = true;
+            
             res.redirect('/');
         }
     );
@@ -63,10 +61,22 @@ module.exports = (app) => {
     });
 
     app.get('/api/check-session', (req, res) => {
+        // Debug information
+        console.log('Session check requested');
+        console.log('- Auth status:', req.isAuthenticated() || !!req.session.userId || !!req.session.isAuthenticated);
+        
+        // All authenticated users are considered admins
+        const isAuthenticated = req.isAuthenticated() || !!req.session.userId || !!req.session.isAuthenticated;
+        const isAdmin = isAuthenticated;  // If authenticated, then admin
+        
+        console.log('- Admin status:', isAdmin);
+        console.log('- User:', req.user);
+        console.log('- Session:', req.session);
+        
         res.json({ 
-            isAuthenticated: req.isAuthenticated() || !!req.session.userId,
+            isAuthenticated: isAuthenticated,
             user: req.user,
-            isAdmin: req.user?.isAdmin || !!req.session.isAdmin
+            isAdmin: isAdmin
         });
     });
 };

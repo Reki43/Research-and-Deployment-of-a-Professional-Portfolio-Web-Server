@@ -1,15 +1,16 @@
 // Authentication check
 async function checkAuth() {
     try {
-        // First check session storage
-        if (sessionStorage.getItem('isAuthenticated') === 'true') {
-            return true;
-        }
+        // Clear existing auth data to force fresh check
+        sessionStorage.removeItem('isAuthenticated');
+        sessionStorage.removeItem('isAdmin');
 
         const response = await fetch('/api/check-session', {
             credentials: 'include'
         });
         const data = await response.json();
+        
+        console.log('Auth check response:', data);
         
         if (!data.isAuthenticated) {
             console.log('Not authenticated, redirecting to login');
@@ -20,6 +21,8 @@ async function checkAuth() {
         sessionStorage.setItem('isAuthenticated', 'true');
         // Store admin status
         sessionStorage.setItem('isAdmin', data.isAdmin ? 'true' : 'false');
+        
+        console.log('Authentication successful, isAdmin:', data.isAdmin);
         return true;
     } catch (error) {
         console.error('Auth check failed:', error);
@@ -28,24 +31,48 @@ async function checkAuth() {
     }
 }
 
-// Call auth check immediately but wait for DOM
+// Wait for DOM content to be loaded before checking auth
 document.addEventListener('DOMContentLoaded', async () => {
+    // Check authentication status
     await checkAuth();
     
     // Add admin controls if the user is an admin
     if (sessionStorage.getItem('isAdmin') === 'true') {
         addAdminControls();
     }
+    
+    // Add logout functionality to header
+    const navMenu = document.querySelector('.nav-menu');
+    if (navMenu && sessionStorage.getItem('isAuthenticated') === 'true') {
+        const logoutBtn = document.createElement('button');
+        logoutBtn.className = 'btn';
+        logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+        logoutBtn.style.marginLeft = '1rem';
+        logoutBtn.onclick = logout;
+        navMenu.appendChild(logoutBtn);
+    }
 });
 
 // Add admin controls to the Projects section
 function addAdminControls() {
-    const projectsSection = document.getElementById('projects');
-    if (!projectsSection) return;
+    console.log('Adding admin controls - Function called');
+    const projectsSection = document.querySelector('#projects');
+    if (!projectsSection) {
+        console.error('Projects section not found');
+        return;
+    }
     
     // Add an edit button to the Projects section header
     const projectsHeader = projectsSection.querySelector('h2');
     if (projectsHeader) {
+        console.log('Found projects header, adding edit button');
+        
+        // Check if button already exists
+        if (projectsHeader.querySelector('.admin-edit-btn')) {
+            console.log('Edit button already exists');
+            return;
+        }
+        
         const editButton = document.createElement('a');
         editButton.href = './admin-projects.html';
         editButton.className = 'btn btn-outline admin-edit-btn';
@@ -53,32 +80,28 @@ function addAdminControls() {
         editButton.style.marginLeft = '15px';
         editButton.style.fontSize = '1rem';
         editButton.style.verticalAlign = 'middle';
+        editButton.style.display = 'inline-block'; // Ensure it's visible
         projectsHeader.appendChild(editButton);
+        console.log('Edit button added to projects section');
+    } else {
+        console.error('Projects header not found');
     }
 }
 
-// Add logout functionality to header
-document.addEventListener('DOMContentLoaded', () => {
-    const navMenu = document.querySelector('.nav-menu');
-    const logoutBtn = document.createElement('button');
-    logoutBtn.className = 'btn';
-    logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
-    logoutBtn.style.marginLeft = '1rem';
-    logoutBtn.onclick = async () => {
-        try {
-            await fetch('/api/logout', {
-                method: 'POST',
-                credentials: 'include'
-            });
-            sessionStorage.removeItem('isAuthenticated');
-            sessionStorage.removeItem('isAdmin');
-            window.location.href = 'login.html';
-        } catch (error) {
-            console.error('Logout failed:', error);
-        }
-    };
-    navMenu.appendChild(logoutBtn);
-});
+// Logout functionality
+async function logout() {
+    try {
+        await fetch('/api/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+        sessionStorage.removeItem('isAuthenticated');
+        sessionStorage.removeItem('isAdmin');
+        window.location.href = 'login.html';
+    } catch (error) {
+        console.error('Logout failed:', error);
+    }
+}
 
 /* Preloader & Initialization */
 window.addEventListener('load', () => {
