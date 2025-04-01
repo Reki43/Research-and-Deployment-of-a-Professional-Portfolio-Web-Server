@@ -106,6 +106,22 @@ function requireAdmin(req, res, next) {
 // Import project data store
 const projectsStore = require('./data/projects');
 
+// Add GitHub API endpoint
+app.get('/api/github-contributions/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        // Simply return the username so the frontend can use it
+        // The actual widget fetches from a third-party service
+        res.json({ username: username, success: true });
+    } catch (error) {
+        console.error('GitHub API error:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Failed to fetch GitHub data'
+        });
+    }
+});
+
 // Get all projects
 app.get('/api/projects', (req, res) => {
     res.json(projectsStore.getAll());

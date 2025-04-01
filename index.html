@@ -15,6 +15,8 @@
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <!-- Add Typed.js -->
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <!-- GitHub Contribution Widget -->
+  <script type="module" defer src="https://cdn.jsdelivr.net/gh/imananoosheh/github-contributions-fetch@latest/github_calendar_widget.js"></script>
 </head>
 <body>
   <!-- Preloader -->
@@ -229,6 +231,24 @@
   <section id="projects" class="section projects-section" data-aos="fade-up">
     <div class="container">
       <h2>Projects</h2>
+      
+      <!-- GitHub Contributions Widget - UPDATED -->
+      <div class="github-contribution-section" data-aos="fade-up">
+        <h3>GitHub Contributions</h3>
+        <p>My open source activity on GitHub:</p>
+        <!-- Manual implementation using iframe -->
+        <div class="github-calendar-container">
+          <iframe 
+            src="https://ghchart.rshah.org/00AEEF/Reki43" 
+            width="100%" 
+            height="120px" 
+            frameborder="0"
+            scrolling="no"
+            style="display: block;"
+          ></iframe>
+        </div>
+      </div>
+      
       <div class="projects-grid">
         <!-- EDIT: Project Card Template - Copy/paste for more projects
         <div class="project-card" 

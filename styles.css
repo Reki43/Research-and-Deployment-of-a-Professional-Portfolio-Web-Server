@@ -1541,3 +1541,48 @@ img {
 .feedback[style*="display: none"] {
   display: none !important;
 }
+
+/* GitHub Contribution Widget Styles */
+.github-contribution-section {
+  margin: 0 auto 40px;
+  padding: 30px;
+  background-color: var(--secondary-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 1000px;
+}
+
+.github-contribution-section h3 {
+  color: var(--accent-color);
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.github-contribution-section p {
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.github-calendar-container {
+  margin: 0 auto;
+  max-width: 100%;
+  background-color: var(--primary-color);
+  padding: 15px;
+  border-radius: 8px;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.github-calendar-container iframe {
+  max-width: 100%;
+  min-height: 120px;
+}
+
+/* Mobile responsiveness for GitHub widget */
+@media (max-width: 768px) {
+  .github-contribution-section {
+    padding: 20px 15px;
+    margin-bottom: 30px;
+  }
+}
