@@ -67,10 +67,4 @@ module.exports = (app) => {
             isAdmin: isAdmin
         });
     });
-    
-    // GitHub username endpoint
-    app.get('/api/github-username', (req, res) => {
-        // Return the GitHub username (hardcoded for simplicity)
-        res.json({ username: 'Reki43' });
-    });
 };

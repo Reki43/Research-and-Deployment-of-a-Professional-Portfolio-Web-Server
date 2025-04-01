@@ -15,7 +15,7 @@
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <!-- Add Typed.js -->
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  <!-- GitHub Contribution Widget -->
+  <!-- GitHub Calendar Widget -->
   <script type="module" defer src="https://cdn.jsdelivr.net/gh/imananoosheh/github-contributions-fetch@latest/github_calendar_widget.js"></script>
 </head>
 <body>
@@ -227,41 +227,25 @@
     </div>
   </section>
 
-  <!-- My Work / Projects Section -->
+  <!-- GitHub Activity Section -->
+  <section id="github-activity" class="section github-activity-section" data-aos="fade-up">
+    <div class="container">
+      <h2>GitHub Contributions</h2>
+      <div class="github-calendar-container">
+        <div id="calendar-component" 
+             username="Reki43" 
+             theme-color="#00AEEF"
+             background-color="#262626">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
   <section id="projects" class="section projects-section" data-aos="fade-up">
     <div class="container">
       <h2>Projects</h2>
-      
-      <!-- GitHub Contributions Widget - UPDATED -->
-      <div class="github-contribution-section" data-aos="fade-up">
-        <h3>GitHub Contributions</h3>
-        <p>My open source activity on GitHub:</p>
-        <!-- Manual implementation using iframe -->
-        <div class="github-calendar-container">
-          <iframe 
-            src="https://ghchart.rshah.org/00AEEF/Reki43" 
-            width="100%" 
-            height="120px" 
-            frameborder="0"
-            scrolling="no"
-            style="display: block;"
-          ></iframe>
-        </div>
-      </div>
-      
       <div class="projects-grid">
-        <!-- EDIT: Project Card Template - Copy/paste for more projects
-        <div class="project-card" 
-             data-project-title="Project Title" 
-             data-project-desc="Full project description here" 
-             data-project-img="Images/project1.jpg">
-          <img src="Images/project1.jpg" alt="Project Name" />
-          <div class="project-info">
-            <h3>Project Name</h3>
-            <p>Short description.</p>
-          </div>
-        </div>
-        -->
         <div class="project-card" 
              data-project-title="BCIT CIT Forum Website" 
              data-project-desc="A comprehensive forum website designed specifically for BCIT CIT students to discuss courses, share resources, and connect with peers. Built with modern web technologies, this platform features user authentication, real-time discussions, and a responsive design that works across all devices. The forum includes dedicated sections for different courses, study groups, and general discussions about student life at BCIT."

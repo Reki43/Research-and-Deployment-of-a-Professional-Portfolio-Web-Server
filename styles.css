@@ -679,8 +679,8 @@ header.scrolled {
 }
 .tools {
   grid-column: 1 / -1;
-  margin-top: 40px;  /* Increased from 25px */
-  margin-bottom: 20px;  /* Changed from -10px */
+  margin-top: 40px;
+  margin-bottom: 0px;  /* Changed from 20px to remove bottom space */
   padding: 0;
   text-align: center;
   background: transparent;
@@ -775,18 +775,26 @@ header.scrolled {
 
 .projects-section {
   background-color: var(--bg-color);
+  padding: 60px 0 100px;
+  position: relative;
 }
 
 .projects-section h2 {
   text-align: center;
   color: var(--accent-color);
-  margin-bottom: 50px; /* Reduced from 60px since we removed the underline */
+  margin-bottom: 40px;
   font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
 
-/* Remove the ::after pseudo-element that created the underline */
-.projects-section h2::after {
-  display: none;
+.projects-section h2 .admin-edit-btn {
+  font-size: 0.9rem;
+  padding: 8px 16px;
+  margin-left: 15px;
+  transform: translateY(2px);
 }
 
 .projects-grid {
@@ -797,6 +805,26 @@ header.scrolled {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  position: relative;
+  padding-top: 40px;  /* Add top padding */
+  margin-top: 40px;  /* Add top margin */
+}
+
+.projects-grid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;  /* Increased width */
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-color),
+    transparent
+  );
+  opacity: 0.3;
 }
 
 .project-card {
@@ -917,6 +945,8 @@ header.scrolled {
   .projects-grid {
     grid-template-columns: 1fr; /* Single column on mobile */
     gap: 25px;
+    margin-top: 30px;
+    padding-top: 30px;
   }
   
   .project-card img {
@@ -1542,47 +1572,57 @@ img {
   display: none !important;
 }
 
-/* GitHub Contribution Widget Styles */
-.github-contribution-section {
-  margin: 0 auto 40px;
-  padding: 30px;
-  background-color: var(--secondary-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+/* GitHub Activity Section */
+.github-activity-section {
+  background-color: var(--bg-color);
+  padding: 60px 0 40px;  /* Reduced top padding from 100px to 60px */
+  position: relative;
+}
+
+.github-activity-section h2 {
   text-align: center;
-  max-width: 1000px;
-}
-
-.github-contribution-section h3 {
   color: var(--accent-color);
-  font-size: 1.8rem;
-  margin-bottom: 15px;
-}
-
-.github-contribution-section p {
-  margin-bottom: 20px;
-  opacity: 0.9;
+  font-size: 2.5rem;
+  margin-bottom: 40px;
 }
 
 .github-calendar-container {
+  width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
-  max-width: 100%;
-  background-color: var(--primary-color);
-  padding: 15px;
-  border-radius: 8px;
-  overflow-x: auto;
-  text-align: center;
+  padding: 40px;
+  background: linear-gradient(145deg, var(--secondary-color), #2b2b2b);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 174, 239, 0.1);
 }
 
-.github-calendar-container iframe {
-  max-width: 100%;
-  min-height: 120px;
+#calendar-component {
+  --calendar-bg: transparent;
+  --calendar-text: var(--text-color);
+  --calendar-grade-0: rgba(255, 255, 255, 0.05);
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  transform: scale(0.95);
+  transform-origin: center;
 }
 
-/* Mobile responsiveness for GitHub widget */
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .github-contribution-section {
-    padding: 20px 15px;
-    margin-bottom: 30px;
+  .github-activity-section {
+    padding: 80px 15px 30px;
+  }
+
+  .github-calendar-container {
+    padding: 20px;
+  }
+
+  #calendar-component {
+    transform: scale(0.85);
+  }
+
+  .projects-section {
+    padding: 40px 0 80px;
   }
 }
