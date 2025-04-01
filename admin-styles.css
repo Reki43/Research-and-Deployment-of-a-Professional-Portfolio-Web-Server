@@ -66,7 +66,7 @@ textarea.form-control {
 }
 
 .project-card-admin {
-    background: rgba(0,0,0,0.2) !important;
+    background: var(--secondary-color) !important;
     border-radius: 8px !important;
     padding: 15px !important;
     position: relative !important;
@@ -74,6 +74,10 @@ textarea.form-control {
     transition: transform 0.3s ease !important;
     border: 1px solid rgba(255,255,255,0.05) !important;
     transform: none !important; /* Prevent unwanted transforms */
+    min-height: 100% !important; /* Add this */
+    height: 100% !important; /* Add this */
+    display: flex !important; /* Add this */
+    flex-direction: column !important; /* Add this */
 }
 
 .project-card-admin:hover {

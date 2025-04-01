@@ -816,6 +816,11 @@ header.scrolled {
   visibility: visible !important; /* Force visibility */
   opacity: 1 !important; /* Force opacity */
   z-index: 1; /* Ensure proper stacking context */
+  min-height: 100%; /* Add this */
+  display: flex; /* Add this */
+  flex-direction: column; /* Add this */
+  height: 100%; /* Add this */
+  background: var(--secondary-color); /* Modified */
 }
 
 .project-card:hover {
@@ -837,16 +842,20 @@ header.scrolled {
 
 .project-info {
   padding: 25px; /* Increased from 15px */
-  position: absolute;
+  position: relative; /* Changed from absolute */
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 15px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  background: var(--secondary-color); /* Changed from gradient */
   color: var(--text-color);
   visibility: visible !important; /* Force visibility */
   opacity: 1 !important; /* Force opacity */
   z-index: 2; /* Higher z-index to appear above the image */
+  flex: 1; /* Add this */
+  display: flex; /* Add this */
+  flex-direction: column; /* Add this */
+  justify-content: space-between;  /* Add this to push content apart */
+  min-height: 150px;  /* Add minimum height */
 }
 
 .project-info h3 {
@@ -857,6 +866,7 @@ header.scrolled {
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
+  margin-top: 0;  /* Add this to remove top spacing */
 }
 
 .project-info p {
@@ -865,6 +875,8 @@ header.scrolled {
   line-height: 1.6;
   color: var(--text-color);
   opacity: 0.9;
+  flex-grow: 1;  /* Allow paragraph to grow and fill space */
+  margin: 15px 0;  /* Add consistent vertical margins */
 }
 
 .status-badge {
@@ -890,6 +902,8 @@ header.scrolled {
   visibility: visible !important; /* Force visibility */
   opacity: 1 !important; /* Force opacity */
   z-index: 3; /* Higher z-index to appear above everything else */
+  align-self: flex-start;  /* Add this to align badge to the left */
+  margin-top: auto;  /* Push badge to bottom if content is short */
 }
 
 @media (max-width: 1200px) {
