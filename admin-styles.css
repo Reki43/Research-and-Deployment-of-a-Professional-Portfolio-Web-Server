@@ -25,12 +25,17 @@
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 30px;
+    position: relative;
+    z-index: 200;
 }
 
 .form-group {
     margin-bottom: 25px;
     position: relative;
-    z-index: 5;
+    z-index: 201;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .form-group label {
@@ -42,7 +47,7 @@
 
 .form-control {
     position: relative;
-    z-index: 10;
+    z-index: 202;
     width: 100%;
     padding: 10px;
     background: rgba(0,0,0,0.3) !important;
@@ -71,17 +76,19 @@ textarea.form-control {
     padding: 15px !important;
     position: relative !important;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important; /* Lighter shadow than projects */
-    transition: transform 0.3s ease !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
     border: 1px solid rgba(255,255,255,0.05) !important;
-    transform: none !important; /* Prevent unwanted transforms */
-    min-height: 100% !important; /* Add this */
-    height: 100% !important; /* Add this */
-    display: flex !important; /* Add this */
-    flex-direction: column !important; /* Add this */
+    min-height: 200px !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    z-index: 1 !important; /* Lower z-index for cards */
 }
 
 .project-card-admin:hover {
     transform: translateY(-5px) !important; /* Control hover behavior */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.8) !important;
 }
 
 .project-actions {
@@ -116,25 +123,12 @@ textarea.form-control {
 }
 
 .btn-row {
+    position: relative;
     display: flex;
-    gap: 10px;
     justify-content: flex-end;
-    margin-top: 30px;
-    position: relative;
-    z-index: 30 !important; /* Increased z-index */
-    clear: both;
-    padding-top: 10px;
-}
-
-.btn-row .btn {
-    min-width: 120px;
-    flex: 0 0 auto;
-    padding: 12px 20px;
-    display: inline-block;
-    position: relative;
-    z-index: 30 !important; /* Increased z-index */
-    font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    margin-top: 20px;
+    z-index: 203;
+    width: 100%;
 }
 
 .feedback {
@@ -183,6 +177,7 @@ textarea.form-control {
     gap: 10px;
     position: relative;
     z-index: 5;
+    margin-bottom: 20px;
 }
 
 .or-divider {
@@ -214,6 +209,7 @@ textarea.form-control {
 .image-preview-container {
     margin: 10px 0;
     min-height: 50px;
+    max-height: 250px; /* Add max height */
     border: 1px dashed rgba(255,255,255,0.2);
     display: flex;
     justify-content: center;
@@ -221,6 +217,17 @@ textarea.form-control {
     padding: 10px;
     position: relative;
     z-index: 3;
+    overflow: hidden; /* Contain oversized images */
+    background: rgba(0,0,0,0.2);
+}
+
+#image-preview {
+    max-width: 100%;
+    max-height: 230px; /* Slightly less than container to account for padding */
+    object-fit: contain;
+    border-radius: 4px;
+    display: block;
+    margin: 0 auto;
 }
 
 #project-img-file, 
@@ -239,15 +246,16 @@ textarea.form-control {
     box-sizing: border-box;
     height: auto;
     padding: 10px;
-    position: relative;
-    z-index: 10;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.1);
-    margin-bottom: 35px;
+    position: relative !important;
+    z-index: 202;
+    background: rgba(0,0,0,0.3) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    border-radius: 4px;
+    color: var(--text-color) !important;
+    margin-bottom: 20px !important;
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    color: var(--text-color) !important; /* Ensure text color is visible */
 }
 
 .status-badge {
@@ -413,4 +421,34 @@ textarea.form-control {
     background: transparent !important;
     border: 2px solid var(--accent-color) !important;
     color: var(--accent-color) !important;
+}
+
+.new-project-card {
+    background: rgba(0,0,0,0.2) !important;
+    border: 2px dashed rgba(255,255,255,0.1) !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+    min-height: 200px !important;
+    height: 100% !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+}
+
+.new-project-card:hover {
+    border-color: var(--accent-color) !important;
+    transform: translateY(-5px) !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.8) !important;
+}
+
+.new-project-card i {
+    font-size: 3.5rem;
+    color: var(--accent-color);
+    transition: transform 0.3s ease;
+}
+
+.new-project-card:hover i {
+    transform: scale(1.1);
 }

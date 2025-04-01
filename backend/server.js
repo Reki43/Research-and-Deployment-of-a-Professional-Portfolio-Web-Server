@@ -8,7 +8,33 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(express.json({ limit: '50mb' }));  // Increased limit for image uploads
+app.use(express.json({
+    limit: '5mb',
+    verify: (req, res, buf) => {
+        try {
+            const data = JSON.parse(buf);
+            
+            // Validate each project's image size
+            if (Array.isArray(data)) {
+                data.forEach(project => {
+                    if (project.image && project.image.length > 5 * 1024 * 1024) { // 5MB limit
+                        throw new Error('Project image too large (max 5MB)');
+                    }
+                });
+            }
+            
+        } catch(e) {
+            res.status(400).json({ message: e.message || 'Invalid JSON' });
+            throw new Error(e.message || 'Invalid JSON');
+        }
+    }
+}));
+
+app.use(express.urlencoded({
+    limit: '5mb',
+    extended: true
+}));
+
 app.use(cors({
     origin: true,
     credentials: true

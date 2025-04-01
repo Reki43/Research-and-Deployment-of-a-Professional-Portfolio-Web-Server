@@ -120,6 +120,18 @@ function renderProjects() {
     const projectList = document.getElementById('project-list');
     projectList.innerHTML = '';
     
+    // Add the new project card first
+    const newProjectCard = document.createElement('div');
+    newProjectCard.className = 'new-project-card';
+    newProjectCard.id = 'add-project-card';
+    newProjectCard.innerHTML = '<i class="fas fa-plus-circle"></i>';
+    newProjectCard.addEventListener('click', () => {
+        resetForm();
+        document.querySelector('.project-form').scrollIntoView({ behavior: 'smooth' });
+    });
+    projectList.appendChild(newProjectCard);
+    
+    // Then add existing projects
     projects.forEach(project => {
         const projectCard = document.createElement('div');
         projectCard.className = 'project-card-admin';
@@ -232,15 +244,60 @@ async function saveProject(e) {
     }
 }
 
-// Upload image and return URL
+// Update the uploadImage function with size validation and compression
 async function uploadImage(file) {
     return new Promise((resolve, reject) => {
+        // Strict size limit of 5MB
+        if (file.size > 5 * 1024 * 1024) {
+            reject(new Error('Image size must be less than 5MB'));
+            return;
+        }
+
         const reader = new FileReader();
-        
         reader.onload = function(e) {
-            // For now, we'll use the Data URL approach
-            // In production, you might want to use server-side storage
-            resolve(e.target.result);
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Calculate new dimensions (max 800px width/height)
+                let width = img.width;
+                let height = img.height;
+                const maxSize = 800;
+                
+                if (width > maxSize || height > maxSize) {
+                    if (width > height) {
+                        height = (height * maxSize) / width;
+                        width = maxSize;
+                    } else {
+                        width = (width * maxSize) / height;
+                        height = maxSize;
+                    }
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                
+                // Draw and compress image with higher compression
+                ctx.drawImage(img, 0, 0, width, height);
+                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.6); // Increased compression
+                
+                // Verify final size
+                const base64str = compressedDataUrl.split(',')[1];
+                const decoded = atob(base64str);
+                if (decoded.length > 2 * 1024 * 1024) {
+                    reject(new Error('Compressed image still too large. Please use a smaller image.'));
+                    return;
+                }
+                
+                resolve(compressedDataUrl);
+            };
+            
+            img.onerror = function() {
+                reject(new Error('Failed to load image'));
+            };
+            
+            img.src = e.target.result;
         };
         
         reader.onerror = function() {
@@ -249,6 +306,28 @@ async function uploadImage(file) {
         
         reader.readAsDataURL(file);
     });
+}
+
+// Update image preview handling
+function updateImagePreview(src) {
+    const imagePreview = document.getElementById('image-preview');
+    imagePreview.style.display = 'none'; // Hide first
+    
+    // Show loading state
+    showFeedback('Loading preview...', 'info');
+    
+    const img = new Image();
+    img.onload = function() {
+        imagePreview.src = src;
+        imagePreview.style.display = 'block';
+        showFeedback('Preview loaded', 'success');
+    };
+    
+    img.onerror = function() {
+        showFeedback('Failed to load image preview', 'error');
+    };
+    
+    img.src = src;
 }
 
 // Edit a project
@@ -285,34 +364,59 @@ function editProject(id) {
 }
 
 // Delete a project with modal confirmation
-let projectToDelete = null;
-
 function deleteProject(id) {
     projectToDelete = id;
     
-    // Find project title for confirmation message
     const project = projects.find(p => p.id === id);
     if (project) {
         const deleteModal = document.getElementById('delete-modal');
         const modalText = deleteModal.querySelector('p');
         modalText.textContent = `Are you sure you want to delete "${project.title}"? This action cannot be undone.`;
-        
-        // Show modal
         deleteModal.style.display = 'flex';
+
+        // Setup confirm button handler
+        const confirmButton = document.getElementById('delete-confirm');
+        confirmButton.onclick = async function() {
+            const index = projects.findIndex(p => p.id === projectToDelete);
+            if (index >= 0) {
+                projects.splice(index, 1);
+                try {
+                    await saveProjectsToServer();
+                    renderProjects();
+                    showFeedback('Project deleted successfully!', 'success');
+                } catch (error) {
+                    console.error('Error deleting project:', error);
+                    showFeedback('Error deleting project. Please try again.', 'error');
+                }
+            }
+            deleteModal.style.display = 'none';
+            projectToDelete = null;
+        };
+
+        // Setup cancel button handler
+        const cancelButton = document.getElementById('delete-cancel');
+        cancelButton.onclick = function() {
+            deleteModal.style.display = 'none';
+            projectToDelete = null;
+        };
     }
 }
 
-// Reset the form
+// Reset the form now called resetForm but serves as "Add Another Project"
 function resetForm() {
     document.getElementById('project-form').reset();
     document.getElementById('project-id').value = '';
     document.getElementById('image-preview').style.display = 'none';
     
-    // Clear any previously selected file
+    // Clear file input and image preview
     document.getElementById('project-img-file').value = '';
-    
-    // Clear image preview and URL
     document.getElementById('project-img').value = '';
+    
+    // Scroll to form
+    document.querySelector('.project-form').scrollIntoView({ behavior: 'smooth' });
+    
+    // Focus on title input for better UX
+    document.getElementById('project-title').focus();
 }
 
 // Save projects to the server with enhanced error handling
@@ -469,6 +573,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 imagePreview.style.display = 'none';
             }
         }
+    });
+    
+    // Add project card click handler
+    document.getElementById('add-project-card').addEventListener('click', () => {
+        resetForm();
+        document.querySelector('.project-form').scrollIntoView({ behavior: 'smooth' });
     });
     
     // Add event listener for status field to ensure buttons remain accessible
