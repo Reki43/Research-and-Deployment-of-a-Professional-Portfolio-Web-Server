@@ -41,10 +41,6 @@ module.exports = (app) => {
             // Successful authentication
             req.session.isAuthenticated = true;
             
-            // Debug information
-            console.log('Google auth successful for:', req.user?.email);
-            console.log('Is admin? (All users are now admins):', true);
-            
             // Set admin flag for all authenticated users
             req.session.isAdmin = true;
             
@@ -61,17 +57,9 @@ module.exports = (app) => {
     });
 
     app.get('/api/check-session', (req, res) => {
-        // Debug information
-        console.log('Session check requested');
-        console.log('- Auth status:', req.isAuthenticated() || !!req.session.userId || !!req.session.isAuthenticated);
-        
         // All authenticated users are considered admins
         const isAuthenticated = req.isAuthenticated() || !!req.session.userId || !!req.session.isAuthenticated;
         const isAdmin = isAuthenticated;  // If authenticated, then admin
-        
-        console.log('- Admin status:', isAdmin);
-        console.log('- User:', req.user);
-        console.log('- Session:', req.session);
         
         res.json({ 
             isAuthenticated: isAuthenticated,

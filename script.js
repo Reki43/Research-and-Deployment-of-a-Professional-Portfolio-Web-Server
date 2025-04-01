@@ -36,6 +36,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Check authentication status
     await checkAuth();
     
+    // Load projects from API if available
+    try {
+        const projectsSection = document.querySelector('#projects .projects-grid');
+        if (projectsSection) {
+            const response = await fetch('/api/projects');
+            if (response.ok) {
+                const projects = await response.json();
+                if (projects && projects.length > 0) {
+                    console.log(`Loaded ${projects.length} projects from API`);
+                    
+                    // Only update projects if we got data from API
+                    updateProjectsInDOM(projects, projectsSection);
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error loading projects from API:', error);
+    }
+    
     // Add admin controls if the user is an admin
     if (sessionStorage.getItem('isAdmin') === 'true') {
         addAdminControls();
@@ -52,6 +71,104 @@ document.addEventListener('DOMContentLoaded', async () => {
         navMenu.appendChild(logoutBtn);
     }
 });
+
+// Function to update projects in the DOM
+function updateProjectsInDOM(projects, container) {
+    if (!container) return;
+    
+    // Clear existing projects
+    container.innerHTML = '';
+    
+    // Add each project
+    projects.forEach(project => {
+        const projectCard = document.createElement('div');
+        projectCard.className = 'project-card';
+        projectCard.setAttribute('data-project-title', project.title);
+        projectCard.setAttribute('data-project-desc', project.description);
+        projectCard.setAttribute('data-project-img', project.image);
+        
+        // Create the image element with error handling
+        const img = document.createElement('img');
+        img.alt = project.title;
+        img.src = project.image;
+        img.style.zIndex = "1"; // Ensure image has proper z-index
+        img.onerror = function() {
+            this.src = 'Images/placeholder.jpg'; // Use a placeholder image on error
+            console.error('Failed to load image for project:', project.title);
+        };
+        
+        // Create the project info
+        const projectInfo = document.createElement('div');
+        projectInfo.className = 'project-info';
+        projectInfo.style.zIndex = "2"; // Ensure info has higher z-index than image
+        projectInfo.style.position = "relative"; // Ensure position context is set
+        
+        // Create title with optional status badge
+        const titleElement = document.createElement('h3');
+        titleElement.textContent = project.title;
+        
+        if (project.status) {
+            const statusBadge = document.createElement('span');
+            statusBadge.className = 'status-badge';
+            statusBadge.textContent = project.status;
+            statusBadge.style.display = "inline-block"; // Force display
+            statusBadge.style.visibility = "visible";   // Ensure visibility
+            titleElement.appendChild(statusBadge);
+        }
+        
+        // Create description 
+        const descElement = document.createElement('p');
+        descElement.textContent = project.shortDescription || project.description.split('.')[0] + '.';
+        
+        // Assemble the elements
+        projectInfo.appendChild(titleElement);
+        projectInfo.appendChild(descElement);
+        
+        projectCard.appendChild(img);
+        projectCard.appendChild(projectInfo);
+        
+        // Force initial visibility
+        projectCard.style.visibility = "visible";
+        projectCard.style.opacity = "1";
+        
+        container.appendChild(projectCard);
+    });
+    
+    // Re-attach event listeners with slight delay to ensure DOM is ready
+    setTimeout(() => {
+        attachProjectModalListeners();
+    }, 100);
+}
+
+// Re-attach event listeners for project modals
+function attachProjectModalListeners() {
+    const projectCards = document.querySelectorAll('.project-card');
+    const projectModal = document.getElementById('project-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    
+    projectCards.forEach(card => {
+        // First remove any existing click event to avoid duplicates
+        card.removeEventListener('click', handleProjectClick);
+        
+        // Then add the click event
+        card.addEventListener('click', handleProjectClick);
+    });
+}
+
+// Separate function for handling project card clicks
+function handleProjectClick() {
+    const projectModal = document.getElementById('project-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    
+    modalTitle.textContent = this.getAttribute('data-project-title');
+    modalDesc.textContent = this.getAttribute('data-project-desc');
+    modalImg.src = this.getAttribute('data-project-img');
+    projectModal.style.display = 'flex';
+}
 
 // Add admin controls to the Projects section
 function addAdminControls() {
@@ -190,21 +307,17 @@ window.addEventListener('scroll', () => {
 });
 
 /* Project Modal Functionality */
-const projectCards = document.querySelectorAll('.project-card');
 const projectModal = document.getElementById('project-modal');
 const modalImg = document.getElementById('modal-img');
 const modalTitle = document.getElementById('modal-title');
 const modalDesc = document.getElementById('modal-desc');
 const closeModal = document.querySelector('.close-modal');
 
-projectCards.forEach(card => {
-  card.addEventListener('click', () => {
-    modalTitle.textContent = card.getAttribute('data-project-title');
-    modalDesc.textContent = card.getAttribute('data-project-desc');
-    modalImg.src = card.getAttribute('data-project-img');
-    projectModal.style.display = 'flex';
-  });
+// Re-attach the initial event listeners after DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    attachProjectModalListeners();
 });
+
 closeModal.addEventListener('click', () => {
   projectModal.style.display = 'none';
 });

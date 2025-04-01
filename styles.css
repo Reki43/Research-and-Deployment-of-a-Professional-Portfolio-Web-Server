@@ -807,6 +807,15 @@ header.scrolled {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  visibility: visible !important; /* Force visibility */
+  opacity: 1 !important; /* Force opacity */
+  z-index: 1; /* Ensure proper stacking context */
 }
 
 .project-card:hover {
@@ -828,6 +837,16 @@ header.scrolled {
 
 .project-info {
   padding: 25px; /* Increased from 15px */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: var(--text-color);
+  visibility: visible !important; /* Force visibility */
+  opacity: 1 !important; /* Force opacity */
+  z-index: 2; /* Higher z-index to appear above the image */
 }
 
 .project-info h3 {
@@ -858,6 +877,19 @@ header.scrolled {
   font-weight: normal;
   vertical-align: middle;
   display: inline-block;
+  display: inline-block !important; /* Force display as inline-block */
+  padding: 3px 8px;
+  margin-left: 10px;
+  background: var(--accent-color);
+  color: var(--bg-color);
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  vertical-align: middle;
+  visibility: visible !important; /* Force visibility */
+  opacity: 1 !important; /* Force opacity */
+  z-index: 3; /* Higher z-index to appear above everything else */
 }
 
 @media (max-width: 1200px) {
@@ -1475,4 +1507,23 @@ header.scrolled {
 img {
   max-width: 100%;
   height: auto;
+}
+
+/* Ensure newly added elements are visible */
+/* [style*="display: none"] {
+  display: inherit !important;
+} */
+
+/* Instead, use specific selectors for elements that need to be visible */
+.status-badge[style*="display: none"] {
+  display: inline-block !important;
+}
+
+/* Keep these elements hidden when they should be */
+.modal[style*="display: none"],
+#preloader[style*="display: none"],
+#delete-modal[style*="display: none"],
+#image-preview[style*="display: none"],
+.feedback[style*="display: none"] {
+  display: none !important;
 }

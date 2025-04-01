@@ -8,11 +8,14 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));  // Increased limit for image uploads
 app.use(cors({
     origin: true,
     credentials: true
 }));
+
+// Serve static files from the project root
+app.use(express.static('../'));
 
 // Session configuration
 app.use(session({
@@ -74,24 +77,56 @@ function requireAdmin(req, res, next) {
     return next();
 }
 
-// Projects API with protection
-const projects = [
-    // Initial projects data will be loaded from the frontend
-];
+// Import project data store
+const projectsStore = require('./data/projects');
 
 // Get all projects
 app.get('/api/projects', (req, res) => {
-    res.json(projects);
+    res.json(projectsStore.getAll());
 });
 
 // Protected route for updating projects - only requires authentication
 app.post('/api/projects', requireAuth, (req, res) => {
     // Update projects
     const newProjects = req.body;
-    projects.length = 0; // Clear array
-    projects.push(...newProjects);
     
-    res.json({ message: 'Projects updated successfully', projects });
+    // Update projects in the store without logging
+    const updatedProjects = projectsStore.updateAll(newProjects);
+    
+    res.json({ 
+        message: 'Projects updated successfully', 
+        projects: updatedProjects
+    });
+});
+
+// Generate HTML for index page based on projects
+app.get('/api/generate-projects-html', requireAuth, (req, res) => {
+    try {
+        const projects = projectsStore.getAll();
+        let projectsHtml = '';
+        
+        projects.forEach(project => {
+            projectsHtml += `
+            <div class="project-card" 
+                 data-project-title="${project.title}" 
+                 data-project-desc="${project.description}" 
+                 data-project-img="${project.image}">
+              <img src="${project.image}" alt="${project.title}" />
+              <div class="project-info">
+                <h3>${project.title}${project.status ? ` <span class="status-badge">${project.status}</span>` : ''}</h3>
+                <p>${project.shortDescription}</p>
+              </div>
+            </div>`;
+        });
+        
+        res.json({ 
+            html: projectsHtml,
+            count: projects.length
+        });
+    } catch (error) {
+        console.error('Error generating HTML:', error);
+        res.status(500).json({ message: 'Error generating HTML' });
+    }
 });
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

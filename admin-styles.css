@@ -1,0 +1,412 @@
+/* Admin Panel Styles */
+.admin-container {
+    max-width: 1000px;
+    margin: 100px auto 50px;
+    background: var(--secondary-color);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.admin-header h1 {
+    color: var(--accent-color);
+    margin: 0;
+}
+
+.project-form {
+    background: rgba(0,0,0,0.2);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 5;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--text-color) !important;
+}
+
+.form-control {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    padding: 10px;
+    background: rgba(0,0,0,0.3) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    border-radius: 4px;
+    color: var(--text-color) !important;
+    font-family: 'Consolas', monospace;
+    box-sizing: border-box;
+}
+
+textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.project-card-admin {
+    background: rgba(0,0,0,0.2) !important;
+    border-radius: 8px !important;
+    padding: 15px !important;
+    position: relative !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important; /* Lighter shadow than projects */
+    transition: transform 0.3s ease !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
+    transform: none !important; /* Prevent unwanted transforms */
+}
+
+.project-card-admin:hover {
+    transform: translateY(-5px) !important; /* Control hover behavior */
+}
+
+.project-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-icon:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.btn-edit {
+    color: var(--accent-color);
+}
+
+.btn-delete {
+    color: #ff6b6b;
+}
+
+.btn-row {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 30px;
+    position: relative;
+    z-index: 30 !important; /* Increased z-index */
+    clear: both;
+    padding-top: 10px;
+}
+
+.btn-row .btn {
+    min-width: 120px;
+    flex: 0 0 auto;
+    padding: 12px 20px;
+    display: inline-block;
+    position: relative;
+    z-index: 30 !important; /* Increased z-index */
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.feedback {
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 4px;
+    text-align: center;
+    display: none;
+}
+
+.feedback.success {
+    background: rgba(0, 128, 0, 0.2);
+    color: #4caf50;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.feedback.error {
+    background: rgba(255, 0, 0, 0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.feedback.info {
+    background: rgba(0, 174, 239, 0.1);
+    color: var(--accent-color);
+    border: 1px solid rgba(0, 174, 239, 0.3);
+}
+
+#back-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+#back-link:hover {
+    transform: translateX(-5px);
+}
+
+/* Image Upload Styles */
+.image-upload-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    z-index: 5;
+}
+
+.or-divider {
+    text-align: center;
+    margin: 10px 0;
+    font-weight: bold;
+    position: relative;
+    z-index: 4;
+}
+
+.or-divider:before,
+.or-divider:after {
+    content: "";
+    position: absolute;
+    height: 1px;
+    background-color: rgba(255,255,255,0.2);
+    top: 50%;
+    width: 40%;
+}
+
+.or-divider:before {
+    left: 0;
+}
+
+.or-divider:after {
+    right: 0;
+}
+
+.image-preview-container {
+    margin: 10px 0;
+    min-height: 50px;
+    border: 1px dashed rgba(255,255,255,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    position: relative;
+    z-index: 3;
+}
+
+#project-img-file, 
+#project-img {
+    padding: 10px;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Status Input and Badge Styles - Updated to fix conflicts with styles.css */
+#project-status {
+    width: 100%;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    position: relative;
+    z-index: 10;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 35px;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: var(--text-color) !important; /* Ensure text color is visible */
+}
+
+.status-badge {
+    display: inline-block !important;
+    position: relative;
+    z-index: 2;
+    padding: 4px 8px;
+    margin-top: 5px;
+    background: var(--accent-color);
+    color: var(--primary-color);
+    border-radius: 4px;
+    font-size: 0.8rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.project-card-admin .status-badge {
+    display: inline-block !important;
+    position: relative;
+    z-index: 5;
+    padding: 4px 8px;
+    margin-top: 10px;
+    background: var(--accent-color) !important;
+    color: var(--primary-color) !important;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Form Layout Fixes */
+#project-form {
+    position: relative;
+    padding-bottom: 20px;
+}
+
+#project-title,
+#project-desc,
+#project-status,
+#project-img,
+#project-img-file {
+    position: relative;
+    z-index: 10;
+    margin-bottom: 5px;
+}
+
+.btn {
+    position: relative;
+    z-index: 25;
+    border: none;
+    font-weight: bold;
+}
+
+.btn-outline {
+    border: 2px solid var(--accent-color);
+}
+
+.form-group:last-of-type {
+    margin-bottom: 40px;
+}
+
+/* Delete Modal Styles */
+.delete-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-modal-content {
+    background: var(--secondary-color);
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.delete-modal-content h3 {
+    color: var(--accent-color);
+    margin-top: 0;
+}
+
+.delete-modal-content p {
+    margin-bottom: 25px;
+}
+
+.delete-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.delete-modal-buttons .btn {
+    min-width: 120px;
+}
+
+.delete-btn-danger {
+    background-color: #ff6b6b;
+}
+
+.delete-btn-danger:hover {
+    background-color: #ff4f4f;
+}
+
+/* Display overrides */
+.project-form [style*="display: none"] {
+    display: inherit !important;
+}
+
+.delete-modal[style*="display: none"] {
+    display: none !important;
+}
+
+.delete-modal[style*="display: flex"] {
+    display: flex !important;
+}
+
+/* Ensure other project.css modals don't interfere */
+.admin-container + .modal {
+    display: none !important;
+}
+
+/* Add a specific class for admin buttons to avoid conflicts */
+.admin-btn {
+    position: relative;
+    z-index: 30 !important;
+    background-color: var(--accent-color) !important;
+    color: var(--primary-color) !important;
+    border: none !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    padding: 12px 20px !important;
+    border-radius: 4px !important;
+}
+
+.admin-btn-outline {
+    background: transparent !important;
+    border: 2px solid var(--accent-color) !important;
+    color: var(--accent-color) !important;
+}
+
+/* Override btn class specifically in admin context */
+.admin-container .btn {
+    position: relative;
+    z-index: 30 !important;
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.admin-container .btn-outline {
+    background: transparent !important;
+    border: 2px solid var(--accent-color) !important;
+    color: var(--accent-color) !important;
+}

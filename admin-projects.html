@@ -6,144 +6,7 @@
     <title>Admin - Projects Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .admin-container {
-            max-width: 1000px;
-            margin: 100px auto 50px;
-            background: var(--secondary-color);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        }
-
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .admin-header h1 {
-            color: var(--accent-color);
-            margin: 0;
-        }
-
-        .project-form {
-            background: rgba(0,0,0,0.2);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 4px;
-            color: var(--text-color);
-            font-family: 'Consolas', monospace;
-        }
-
-        textarea.form-control {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .project-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .project-card-admin {
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
-            padding: 15px;
-            position: relative;
-        }
-
-        .project-actions {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 5px;
-        }
-
-        .btn-icon {
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            font-size: 16px;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-icon:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        .btn-edit {
-            color: var(--accent-color);
-        }
-
-        .btn-delete {
-            color: #ff6b6b;
-        }
-
-        .btn-row {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
-        .feedback {
-            padding: 10px;
-            margin-top: 20px;
-            border-radius: 4px;
-            text-align: center;
-            display: none;
-        }
-
-        .feedback.success {
-            background: rgba(0, 128, 0, 0.2);
-            color: #4caf50;
-            border: 1px solid rgba(76, 175, 80, 0.3);
-        }
-
-        .feedback.error {
-            background: rgba(255, 0, 0, 0.2);
-            color: #ff6b6b;
-            border: 1px solid rgba(255, 107, 107, 0.3);
-        }
-
-        #back-link {
-            color: var(--accent-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.3s ease;
-        }
-
-        #back-link:hover {
-            transform: translateX(-5px);
-        }
-    </style>
+    <link rel="stylesheet" href="admin-styles.css">
 </head>
 <body>
     <div id="preloader">
@@ -172,15 +35,18 @@
                     <textarea id="project-desc" class="form-control" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="project-img">Image URL</label>
-                    <input type="text" id="project-img" class="form-control" required>
+                    <label for="project-img">Image</label>
+                    <div class="image-upload-container">
+                        <input type="file" id="project-img-file" accept="image/*" class="form-control">
+                        <div class="image-preview-container">
+                            <img id="image-preview" src="" alt="Image preview" style="display: none; max-width: 100%; max-height: 200px; margin-top: 10px;">
+                        </div>
+                        <div class="or-divider">OR</div>
+                        <input type="text" id="project-img" class="form-control" placeholder="Enter image URL">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="project-short-desc">Short Description</label>
-                    <input type="text" id="project-short-desc" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="project-status">Status (optional)</label>
+                    <label for="project-status">Status</label>
                     <input type="text" id="project-status" class="form-control" placeholder="e.g. In Development">
                 </div>
                 <div class="btn-row">
@@ -196,267 +62,18 @@
         </div>
     </div>
 
-    <script>
-        // Authentication check - Updated with better error handling
-        async function checkAuth() {
-            try {
-                // Check session storage first for faster response
-                if (sessionStorage.getItem('isAuthenticated') === 'true' && 
-                    sessionStorage.getItem('isAdmin') === 'true') {
-                    return true;
-                }
+    <!-- Add Delete Confirmation Modal -->
+    <div id="delete-modal" class="delete-modal">
+        <div class="delete-modal-content">
+            <h3>Delete Project</h3>
+            <p>Are you sure you want to delete this project? This action cannot be undone.</p>
+            <div class="delete-modal-buttons">
+                <button id="delete-cancel" class="btn btn-outline">Cancel</button>
+                <button id="delete-confirm" class="btn delete-btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
 
-                // Verify with server
-                const response = await fetch('/api/check-session', {
-                    credentials: 'include'
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Authentication check failed');
-                }
-                
-                const data = await response.json();
-                
-                if (!data.isAuthenticated) {
-                    console.log('Not authenticated, redirecting to login');
-                    window.location.href = './login.html';
-                    return false;
-                }
-                
-                if (!data.isAdmin) {
-                    console.log('Not an admin, redirecting to home');
-                    window.location.href = './index.html';
-                    return false;
-                }
-                
-                // Store authentication state
-                sessionStorage.setItem('isAuthenticated', 'true');
-                sessionStorage.setItem('isAdmin', 'true');
-                
-                return true;
-            } catch (error) {
-                console.error('Auth check failed:', error);
-                window.location.href = './login.html';
-                return false;
-            }
-        }
-
-        // Call auth check immediately when the page loads
-        window.addEventListener('DOMContentLoaded', async () => {
-            // Hide the content until authentication is verified
-            document.querySelector('.admin-container').style.display = 'none';
-            
-            const isAuthorized = await checkAuth();
-            if (!isAuthorized) return;
-            
-            // Show admin interface after auth check passes
-            document.querySelector('.admin-container').style.display = 'block';
-            
-            // Hide preloader
-            document.getElementById('preloader').style.display = 'none';
-            
-            // Load projects
-            loadProjects();
-            
-            // Setup event listeners
-            document.getElementById('logout-btn').addEventListener('click', logout);
-            document.getElementById('project-form').addEventListener('submit', saveProject);
-            document.getElementById('reset-form').addEventListener('click', resetForm);
-        });
-
-        // Global projects array
-        let projects = [];
-
-        // Load projects from DOM
-        async function loadProjects() {
-            // Extract projects from the main page
-            try {
-                const response = await fetch('index.html');
-                const html = await response.text();
-                
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                
-                const projectCards = doc.querySelectorAll('.project-card');
-                projects = Array.from(projectCards).map(card => ({
-                    id: generateId(),
-                    title: card.getAttribute('data-project-title'),
-                    description: card.getAttribute('data-project-desc'),
-                    image: card.getAttribute('data-project-img'),
-                    shortDescription: card.querySelector('.project-info p').textContent,
-                    status: card.querySelector('.status-badge')?.textContent || ''
-                }));
-                
-                renderProjects();
-            } catch (error) {
-                console.error('Error loading projects:', error);
-                showFeedback('Error loading projects. Please try again.', 'error');
-            }
-        }
-
-        // Render projects in the admin interface
-        function renderProjects() {
-            const projectList = document.getElementById('project-list');
-            projectList.innerHTML = '';
-            
-            projects.forEach(project => {
-                const projectCard = document.createElement('div');
-                projectCard.className = 'project-card-admin';
-                projectCard.innerHTML = `
-                    <div class="project-actions">
-                        <button class="btn-icon btn-edit" onclick="editProject('${project.id}')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn-icon btn-delete" onclick="deleteProject('${project.id}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                    <h3>${project.title}</h3>
-                    <p>${project.shortDescription}</p>
-                    ${project.status ? `<span class="status-badge">${project.status}</span>` : ''}
-                `;
-                projectList.appendChild(projectCard);
-            });
-        }
-
-        // Save a project (add or update)
-        async function saveProject(e) {
-            e.preventDefault();
-            
-            const id = document.getElementById('project-id').value || generateId();
-            const title = document.getElementById('project-title').value;
-            const description = document.getElementById('project-desc').value;
-            const image = document.getElementById('project-img').value;
-            const shortDescription = document.getElementById('project-short-desc').value;
-            const status = document.getElementById('project-status').value;
-            
-            const project = { id, title, description, image, shortDescription, status };
-            
-            // Update or add
-            const existingIndex = projects.findIndex(p => p.id === id);
-            if (existingIndex >= 0) {
-                projects[existingIndex] = project;
-            } else {
-                projects.push(project);
-            }
-            
-            try {
-                await saveProjectsToServer();
-                renderProjects();
-                resetForm();
-                showFeedback('Project saved successfully!', 'success');
-            } catch (error) {
-                console.error('Error saving project:', error);
-                showFeedback('Error saving project. Please try again.', 'error');
-            }
-        }
-
-        // Edit a project
-        function editProject(id) {
-            const project = projects.find(p => p.id === id);
-            if (!project) return;
-            
-            document.getElementById('project-id').value = project.id;
-            document.getElementById('project-title').value = project.title;
-            document.getElementById('project-desc').value = project.description;
-            document.getElementById('project-img').value = project.image;
-            document.getElementById('project-short-desc').value = project.shortDescription;
-            document.getElementById('project-status').value = project.status || '';
-            
-            // Scroll to form
-            document.querySelector('.project-form').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Delete a project
-        async function deleteProject(id) {
-            if (!confirm('Are you sure you want to delete this project?')) return;
-            
-            const index = projects.findIndex(p => p.id === id);
-            if (index >= 0) {
-                projects.splice(index, 1);
-                
-                try {
-                    await saveProjectsToServer();
-                    renderProjects();
-                    showFeedback('Project deleted successfully!', 'success');
-                } catch (error) {
-                    console.error('Error deleting project:', error);
-                    showFeedback('Error deleting project. Please try again.', 'error');
-                }
-            }
-        }
-
-        // Reset the form
-        function resetForm() {
-            document.getElementById('project-form').reset();
-            document.getElementById('project-id').value = '';
-        }
-
-        // Save projects to the server with enhanced error handling
-        async function saveProjectsToServer() {
-            try {
-                const response = await fetch('/api/projects', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    credentials: 'include',  // Important for auth cookies
-                    body: JSON.stringify(projects)
-                });
-                
-                if (!response.ok) {
-                    // Handle specific error cases
-                    if (response.status === 401) {
-                        sessionStorage.removeItem('isAuthenticated');
-                        sessionStorage.removeItem('isAdmin');
-                        window.location.href = './login.html';
-                        throw new Error('Authentication required. Please log in.');
-                    } else if (response.status === 403) {
-                        window.location.href = './index.html';
-                        throw new Error('You do not have permission to perform this action.');
-                    }
-                    
-                    const data = await response.json();
-                    throw new Error(data.message || 'Failed to save projects');
-                }
-                
-                return true;
-            } catch (error) {
-                console.error('Save error:', error);
-                throw error;
-            }
-        }
-
-        // Show feedback message
-        function showFeedback(message, type) {
-            const feedback = document.getElementById('feedback');
-            feedback.textContent = message;
-            feedback.className = `feedback ${type}`;
-            feedback.style.display = 'block';
-            
-            setTimeout(() => {
-                feedback.style.display = 'none';
-            }, 3000);
-        }
-
-        // Generate a unique ID
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
-        }
-
-        // Logout function
-        async function logout() {
-            try {
-                await fetch('/api/logout', {
-                    method: 'POST',
-                    credentials: 'include'
-                });
-                sessionStorage.removeItem('isAuthenticated');
-                window.location.href = 'login.html';
-            } catch (error) {
-                console.error('Logout failed:', error);
-            }
-        }
-    </script>
+    <script src="admin-projects.js"></script>
 </body>
 </html>
