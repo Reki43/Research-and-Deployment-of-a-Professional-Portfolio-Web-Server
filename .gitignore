@@ -2,6 +2,10 @@
 node_modules/
 package-lock.json
 
+# Environment & secrets
+.env
+*.pem
+*.key
 
 # IDE
 .vscode/
@@ -11,5 +15,4 @@ package-lock.json
 .DS_Store
 Thumbs.db
 
-# Documentation
-docs/
+
